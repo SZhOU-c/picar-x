@@ -15,8 +15,8 @@ def avoid_obstacle(px, distance):
         print("Too close! Backing up...")
 
         px.backward(POWER)
-        backup_time = 1/(distance * 2)
-        time.sleep(0.1)  # back up a bit longer
+        backup_time = 1 / max(distance * 2, 4)
+        time.sleep(backup_time)  # back up a bit longer
     else:
         print("Obstacle ahead, turning...")
         turn_angle = random.choice([-45, 45])  # random left/right turn
@@ -43,6 +43,9 @@ def main():
 
     finally:
         px.forward(0)
+
+def reset():
+    px.set_dir_servo_angle(0)
 
 if __name__ == "__main__":
     main()
