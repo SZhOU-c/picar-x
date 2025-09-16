@@ -16,7 +16,7 @@ def avoid_obstacle(px, distance):
         print("Too close! Backing up...")
 
         px.backward(POWER)
-        backup_time = 1 / max(distance * 2, 4) # backup_time = [0.025, 0.25]
+        backup_time = 1 / max(distance , 4) # backup_time = [0.025, 0.25]
         time.sleep(backup_time)  # back up a bit longer
     else:
         print("Obstacle ahead, turning...")
