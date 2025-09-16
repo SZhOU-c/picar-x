@@ -4,8 +4,7 @@ import random
 
 POWER = 50
 SAFE_DISTANCE = 40     # >40 cm = safe, go forward
-DANGER_DISTANCE = 20   # 20–40 cm = obstacle ahead, turn
-BACKUP_DISTANCE = 20   # <20 cm = backup immediately
+BACKUP_DISTANCE = 15   # <20 cm = backup immediately
 TURN_ANGLE = 30
 
 def avoid_obstacle(px, distance):
