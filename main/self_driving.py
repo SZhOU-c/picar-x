@@ -13,8 +13,9 @@ def avoid_obstacle(px, distance):
     
     if distance < BACKUP_DISTANCE:
         print("Too close! Backing up...")
-        px.set_dir_servo_angle(random.choice([-30, 30]))  # random direction
+
         px.backward(POWER)
+        backup_time = 1/(distance * 2)
         time.sleep(0.1)  # back up a bit longer
     else:
         print("Obstacle ahead, turning...")
