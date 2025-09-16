@@ -16,13 +16,13 @@ def avoid_obstacle(px, distance):
 
         px.backward(POWER)
         backup_time = 1 / max(distance , 4) # backup_time = [0.025, 0.25]
-        turn_angle = random( 15, 30)
+        turn_angle = random.choice([15, 30])
         turn_direction = random.choice((-1, 1)) * turn_angle
         px.set_dir_servo_angle(turn_direction)
         time.sleep(backup_time)  # back up a bit longer
     else:
         print("Obstacle ahead, turning...")
-        turn_angle = random( 15, 30)
+        turn_angle = random.choice([15, 30])
         turn_direction = random.choice((-1, 1)) * turn_angle
         px.set_dir_servo_angle(turn_direction)
         px.forward(POWER)
