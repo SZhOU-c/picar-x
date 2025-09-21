@@ -62,15 +62,19 @@ def main():
             distance = round(px.ultrasonic.read(), 2)
             print(f"Distance: {distance} cm")
 
-            if distance >= SAFE_DISTANCE:
+            #if distance >= SAFE_DISTANCE:
                 # Safe → drive straight
-                px.set_dir_servo_angle(0)
-                px.forward(POWER)
-            else:
+                #px.set_dir_servo_angle(0)
+                #px.forward(POWER)
+            #else:
                 # Obstacle detected → avoid
-                avoid_obstacle(px, distance)
-
-            time.sleep(0.1)
+                #avoid_obstacle(px, distance)
+            key = readchar.readkey()
+            key = key.lower()
+            if key == 'q':
+                map(px)
+            time.sleep(0.5)
+            
 
     finally:
         px.forward(0)
