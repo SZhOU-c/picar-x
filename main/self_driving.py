@@ -2,9 +2,10 @@ from picarx import Picarx
 import time
 import random
 import numpy as np
-import mathq
+import math
 from vilib import Vilib
 import readchar
+import cv2 
 #from scipy.ndimage import binary_dilation
 
 
@@ -32,7 +33,8 @@ def map(px):
     print(env_map)
     # wrap the obstacles to fill the measuring gap.
     # After marking obstacles, you can expand them to account for obstacle width
-    #env_map = binary_dilation(env_map, iterations=1).astype(int)
+    env_map = cv2.dilate(env_map, np.ones((3,3), np.uint8), iterations=1)
+    print(env_map)
 
 
 def avoid_obstacle(px, distance):
