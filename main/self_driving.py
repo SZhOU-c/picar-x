@@ -67,7 +67,7 @@ def avoid_obstacle(px, distance):
         time.sleep(0.1)
 
 def main():
-    env_map = np.zeros((GRID_SIZE, GRID_SIZE), dtype=int)
+    env_map = np.zeros((GRID_SIZE, GRID_SIZE), dtype=np.uint8)
     px = Picarx()
     try:
         while True:
