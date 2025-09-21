@@ -23,7 +23,10 @@ def map(env_map, px):
     px.set_cam_tilt_angle(-6)
     for i in range(-60, 61, 2):
         px.set_cam_pan_angle(i)
+        
         distance = round(px.ultrasonic.read(), 2)
+        print(distance) 
+        
         angle_rad = i * math.pi / 180
         obstacle_x = CAR_X + int(round(distance * math.cos(angle_rad)))
         obstacle_y = CAR_Y + int(round(distance * math.sin(angle_rad)))
