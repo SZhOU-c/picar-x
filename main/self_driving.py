@@ -4,6 +4,7 @@ import random
 import numpy as np
 import math
 from vilib import Vilib
+import readchar
 #from scipy.ndimage import binary_dilation
 
 
