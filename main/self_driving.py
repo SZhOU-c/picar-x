@@ -15,12 +15,11 @@ BACKUP_DISTANCE = 15   # <20 cm = backup immediately
 
 # Create an empty 2D map: 100x100 grid initialized with zeros
 GRID_SIZE = 100
-env_map = np.zeros((GRID_SIZE, GRID_SIZE), dtype=int)
 
 # Example car position at the bottom center (x=0, y=0 in world coords -> mapped to (50,0))
 CAR_X, CAR_Y = GRID_SIZE // 2, 0
 
-def map(px):
+def map(env_map, px):
     px.set_cam_tilt_angle(0)
     for i in range(-60, 61, 2):
         px.set_cam_pan_angle(i)
@@ -35,7 +34,16 @@ def map(px):
     # After marking obstacles, you can expand them to account for obstacle width
     env_map = cv2.dilate(env_map, np.ones((3,3), np.uint8), iterations=1)
     print(env_map)
+    return env_map
 
+def take_photo():
+    _time = strftime('%Y-%m-%d-%H-%M-%S',localtime(time()))
+    name = 'photo_%s'%_time
+    username = os.getlogin()
+
+    path = f"/home/{username}/picar-x/"
+    Vilib.take_photo(name, path)
+    print('photo save as %s%s.jpg'%(path,name))
 
 def avoid_obstacle(px, distance):
 
@@ -59,6 +67,7 @@ def avoid_obstacle(px, distance):
         time.sleep(0.1)
 
 def main():
+    env_map = np.zeros((GRID_SIZE, GRID_SIZE), dtype=int)
     px = Picarx()
     try:
         while True:
@@ -74,8 +83,10 @@ def main():
                 #avoid_obstacle(px, distance)
             key = readchar.readkey()
             key = key.lower()
-            if key == 'q':
-                map(px)
+            if key == 'm':
+                env_map = map(env_map, px)
+            elif key =="f":
+                take_photo()
             time.sleep(0.5)
             
 
