@@ -1,10 +1,37 @@
 from picarx import Picarx
 import time
 import random
+import numpy as np
+import math
+from vilib import Vilib
+#from scipy.ndimage import binary_dilation
+
 
 POWER = 50
 SAFE_DISTANCE = 40     # >40 cm = safe, go forward
 BACKUP_DISTANCE = 15   # <20 cm = backup immediately
+
+# Create an empty 2D map: 100x100 grid initialized with zeros
+GRID_SIZE = 100
+env_map = np.zeros((GRID_SIZE, GRID_SIZE), dtype=int)
+
+# Example car position at the bottom center (x=0, y=0 in world coords -> mapped to (50,0))
+CAR_X, CAR_Y = GRID_SIZE // 2, 0
+
+def map(px):
+    px.set_can_tilt_angle(0)
+    for i in range(-60, 61, 2):
+        px.set_cam_pan_angle(i)
+        distance = round(px.ultrasonic.read(), 2)
+        angle_rad = i * math.pi / 180
+        obstacle_x = CAR_X + int(round(distance * math.cos(angle_rad)))
+        obstacle_y = CAR_Y + int(round(distance * math.sin(angle_rad)))
+        if 0 <= obstacle_x < GRID_SIZE and 0 <= obstacle_y < GRID_SIZE:
+            env_map[obstacle_y, obstacle_x] = 1
+    print(env_map)
+    # wrap the obstacles to fill the measuring gap.
+    # After marking obstacles, you can expand them to account for obstacle width
+    #env_map = binary_dilation(env_map, iterations=1).astype(int)
 
 
 def avoid_obstacle(px, distance):
