@@ -20,7 +20,7 @@ GRID_SIZE = 100
 CAR_X, CAR_Y = GRID_SIZE // 2, 0
 
 def map(env_map, px):
-    px.set_cam_tilt_angle(0)
+    # px.set_cam_tilt_angle(0)
     for i in range(-60, 61, 2):
         px.set_cam_pan_angle(i)
         distance = round(px.ultrasonic.read(), 2)
