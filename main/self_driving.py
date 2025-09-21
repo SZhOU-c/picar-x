@@ -2,7 +2,7 @@ from picarx import Picarx
 import time
 import random
 import numpy as np
-import math
+import mathq
 from vilib import Vilib
 import readchar
 #from scipy.ndimage import binary_dilation
@@ -20,7 +20,7 @@ env_map = np.zeros((GRID_SIZE, GRID_SIZE), dtype=int)
 CAR_X, CAR_Y = GRID_SIZE // 2, 0
 
 def map(px):
-    px.set_can_tilt_angle(0)
+    px.set_cam_tilt_angle(0)
     for i in range(-60, 61, 2):
         px.set_cam_pan_angle(i)
         distance = round(px.ultrasonic.read(), 2)

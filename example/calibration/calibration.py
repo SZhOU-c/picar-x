@@ -106,8 +106,8 @@ def cali_helper():
             servos_test()
         elif key == 'w' or key == 'd':
             servos_offset[servo_num] += step
-            if servos_offset[servo_num] > 20:
-                servos_offset[servo_num] =20
+            if servos_offset[servo_num] > 60:
+                servos_offset[servo_num] =60
             servos_offset[servo_num] = round(servos_offset[servo_num], 2) 
             show_info()
             set_servos_offset(servo_num, servos_offset[servo_num])
