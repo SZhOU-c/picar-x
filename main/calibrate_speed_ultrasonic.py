@@ -10,12 +10,14 @@ def main():
     try:
         power = 50
         px = Picarx()
+        px.set_dir_servo_angle(0)
+        px.set_cam_pan_angle(0)
         # px = Picarx(ultrasonic_pins=['D2','D3']) # tring, echo
-        distance = []
+        distance = [0.0,1.1,2.1,3.1]
         distance[0] = round(px.ultrasonic.read(), 2)
         print("initial distance: ",distance[0])
 
-        px.set_dir_servo_angle(0)
+        
         px.forward(power)
         time.sleep(0.1)
         px.forward(0)
@@ -31,7 +33,6 @@ def main():
         moved = distance[1] - distance[2]
         print("after 0.2 second moved ",moved , " velocity = ", moved/0.2)
 
-        px.set_dir_servo_angle(0)
         px.forward(power)
         time.sleep(0.5)
         px.forward(0)
