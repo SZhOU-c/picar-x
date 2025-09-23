@@ -13,6 +13,7 @@ def main():
         px.set_dir_servo_angle(0)
         px.set_cam_pan_angle(0)
         # px = Picarx(ultrasonic_pins=['D2','D3']) # tring, echo
+        px.ultrasonic.read()
         distance = [0.0,1.1,2.1,3.1]
         distance[0] = round(px.ultrasonic.read(), 2)
         print("initial distance: ",distance[0])
