@@ -30,7 +30,7 @@ px = Picarx()
 
 
 def map_and_plan(env_map, car_x, car_y, Target_address):
-    print("map and plan (" + car_x + car_y + Target_address + ")")
+    print(f"map and plan (car_x={car_x}, car_y={car_y}, target={Target_address})")
     px.set_cam_tilt_angle(-10)
     for i in range(-60, 61, 2):
         px.set_cam_pan_angle(i)
@@ -124,7 +124,7 @@ def main():
 
     try:
         while True:
-            print("current status:" + status)
+            print("current status:", status, "steps = ", steps)
             if status == "move" and steps < 5:
 
                 car_x, car_y = move(car_x, car_y, actions)
