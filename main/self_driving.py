@@ -82,7 +82,8 @@ def map_and_plan(env_map, car_x, car_y, th0):
     print("dilated map:")
     show_map(env_map, car_x, car_y)
     
-    actions, waypoints = deque(A_star(env_map, car_x, car_y, th0))
+    actions, waypoints = A_star(env_map, car_x, car_y, th0)
+    actions = deque(actions) if actions else deque()
     show_map(env_map, car_x, car_y, waypoints)
     return env_map, actions
 
