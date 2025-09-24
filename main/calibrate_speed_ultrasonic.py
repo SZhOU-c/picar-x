@@ -30,6 +30,7 @@ def main():
 
         
         while(True):
+            env_map = np.zeros((GRID_SIZE, GRID_SIZE), dtype=np.uint8)
             for i in range(-60, 61, 2):
                 px.set_cam_pan_angle(i)
         
