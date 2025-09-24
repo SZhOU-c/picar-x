@@ -31,7 +31,7 @@ HEADING_BINS = int(round(2*math.pi / STEP))
 
 STEER_STRAIGHT = 0
 DT_S = 0.3
-STEER_LEFT = -20
+STEER_LEFT = -25
 STEER_RIGHT = 30
 TURN_RAD = math.radians(TURN_DEG)
 
