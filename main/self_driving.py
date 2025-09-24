@@ -36,8 +36,8 @@ STEER_RIGHT = 30
 TURN_RAD = math.radians(TURN_DEG)
 
 # Goal region in GRID coordinates (row 0 = bottom)
-GOAL_ROW_MIN, GOAL_ROW_MAX = 20, 40
-GOAL_COL_MIN, GOAL_COL_MAX = 180, 199
+GOAL_ROW_MIN, GOAL_ROW_MAX = 180, 199
+GOAL_COL_MIN, GOAL_COL_MAX = 20, 40
 
 # Cost shaping (optional)
 TURN_PENALTY = 0.1     # small cost to prefer fewer turns
