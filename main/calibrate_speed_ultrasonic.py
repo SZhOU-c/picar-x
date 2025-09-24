@@ -45,8 +45,9 @@ def main():
                 env_map[obstacle_y, obstacle_x] = 1
 
         
-        while(true):
+        while(True):
             update_web(env_map, car_x, car_y)
+            time.sleep(1)
     finally:
         px.forward(0)
 
