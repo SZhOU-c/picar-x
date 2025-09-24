@@ -8,6 +8,7 @@ import cv2
 import heapq
 from collections import deque
 import matplotlib.pyplot as plt
+import web_ui  # or however you import where the Flask app lives
 #from scipy.ndimage import binary_dilation
 
 
@@ -73,18 +74,20 @@ def map_and_plan(env_map, car_x, car_y, th0):
             env_map[obstacle_y, obstacle_x] = 1
 
     print("scanned map:")
-    show_map(env_map, car_x, car_y)
+    web_ui.ENV_MAP = env_map.copy()
+    web_ui.CAR_POSE = (car_x, car_y)
     # wrap the obstacles to fill the measuring gap.
     # After marking obstacles, you can expand them to account for obstacle width
     env_map = cv2.dilate(env_map, np.ones((3,3), np.uint8), iterations=3)
 
 
     print("dilated map:")
-    show_map(env_map, car_x, car_y)
+    web_ui.ENV_MAP = env_map.copy()
+
     
     actions, waypoints = A_star(env_map, car_x, car_y, th0)
     actions = deque(actions) if actions else deque()
-    show_map(env_map, car_x, car_y, waypoints)
+    web_ui.WAYPOINTS = waypoints
     return env_map, actions
 
 def show_map(env_map, car_x=None, car_y=None, path=None):
@@ -103,7 +106,7 @@ def show_map(env_map, car_x=None, car_y=None, path=None):
         plt.plot(car_x, car_y, "ro", markersize=6, label="Car")
 
     # draw path if provided
-    if path is not None:
+    if path is not None and len(path) > 1:
         xs, ys = zip(*[(x, y) for (x,y,*_) in path])
         plt.plot(xs, ys, "b-", linewidth=1.5, label="Path")
 
@@ -372,11 +375,18 @@ def A_star(env_map, car_x_cm, car_y_cm, theta):
 def main():
     # Vilib.camera_start(vflip=False,hflip=False)
     # Vilib.display(local=True,web=True)
-
+    
     env_map = np.zeros((GRID_SIZE, GRID_SIZE), dtype=np.uint8)
      # 200 * 0.5 / 2 = 50.0 cm
     car_x = (GRID_SIZE * CELL_CM) / 2.0
     car_y = 0
+
+    web_ui.start_server()
+    
+    web_ui.ENV_MAP = env_map.copy()
+    web_ui.CAR_POSE = (car_x, car_y)
+    web_ui.WAYPOINTS = None
+
     status = "map"
     steps = 0
     actions = deque()
@@ -414,6 +424,7 @@ def main():
             
             elif status == "stop":
                 time.sleep(0.5)  
+            web_ui.CAR_POSE = (car_x, car_y)
     finally:
         px.forward(0)
 
