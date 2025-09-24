@@ -1,5 +1,6 @@
 from picarx import Picarx
 import time
+import readchar 
 
 
 SafeDistance = 40   # > 40 safe
@@ -9,17 +10,22 @@ px = Picarx()
 
 def main():
     try:
-        power = 50
-        
         px.set_dir_servo_angle(30)
         px.set_cam_pan_angle(0)
-        # px = Picarx(ultrasonic_pins=['D2','D3']) # tring, echo
-        px.ultrasonic.read()
+        while True:
+            key = readchar.readkey()
+            
+            key = key.lower()
+            power = 50
+        
+            
+            # px = Picarx(ultrasonic_pins=['D2','D3']) # tring, echo
+            px.ultrasonic.read()
+            if key == 'r':
+                px.forward(power)
+                time.sleep(0.2)
+                px.forward(0)
 
-        px.forward(power)
-
-        time.sleep(0.2)
-        px.forward(0)
     finally:
         px.forward(0)
 
