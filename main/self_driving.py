@@ -310,7 +310,7 @@ def A_star(env_map, car_x_cm, car_y_cm, theta):
         return [], []
 
     start = (car_x_cm, car_y_cm, wrap_angle(theta))
-
+    print("running Astar")
     # OPEN: (f, g, x, y, th)
     open_heap = []
     g0 = 0.0
