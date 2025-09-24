@@ -276,6 +276,7 @@ def A_star(env_map, car_x_cm, car_y_cm, theta):
     # Validate start
     r0, c0 = world_to_grid(car_x_cm, car_y_cm)
     if not in_bounds(env_map, r0, c0) or not passable(env_map, r0, c0):
+        print("not in bound")
         return []
 
     start = (car_x_cm, car_y_cm, wrap_angle(theta))
