@@ -46,6 +46,9 @@ BACK_PENALTY = 5.0     # big cost so reverse is last resort
 # Collision sampling resolution along a step
 SAMPLE_STEP_CM = CELL_CM  # sample every cell length along motion
 # Goal region in GRID coords (row 0 at bottom)
+STOP_MIN_W = 70
+STOP_MIN_H = 70
+STOP_MIN_ACC = 80  
 
 
 px = Picarx()
@@ -374,9 +377,20 @@ def A_star(env_map, car_x_cm, car_y_cm, theta):
     print("No path")
     return [], []
 
+def stop_seen():
+    p = Vilib.traffic_sign_obj_parameter
+    return (
+        p.get('t') == 'stop' and
+        p.get('w', 0) >= STOP_MIN_W and
+        p.get('h', 0) >= STOP_MIN_H and
+        p.get('acc', 0) >= STOP_MIN_ACC
+    )
+
 def main():
-    # Vilib.camera_start(vflip=False,hflip=False)
-    # Vilib.display(local=True,web=True)
+    Vilib.camera_start(vflip=False,hflip=False)
+    Vilib.display(local=True,web=True)
+    Vilib.traffic_detect_switch(True)
+
     px.set_cam_tilt_angle(0)
     px.set_dir_servo_angle(0)
     env_map = np.zeros((GRID_SIZE, GRID_SIZE), dtype=np.uint8)
@@ -394,20 +408,27 @@ def main():
     steps = 0
     actions = deque()
     th0    = 0.0  # facing +Y
+    stop_found = 0
+    stopped = False
     print("init sucessfully")
 
     try:
         while True:
+            
             print("current status:", status, "steps = ", steps)
-            if status == "move" and steps < 5:
+            if status == "move":
+                if stop_seen() and not stopped:
+                    print("sees a stop sign, and not stopped before!")
+                    time.sleep(1)  
+                    stopped = True
 
-                car_x, car_y, th0 = move(car_x, car_y, th0, actions)
-                steps += 1
-
-            elif status == "move" and steps >= 5:
-
-                car_x, car_y, th0 = move(car_x, car_y, th0, actions)
-                status = "map"
+                
+                if steps < 5:
+                    car_x, car_y, th0 = move(car_x, car_y, th0, actions)
+                    steps += 1
+                else:
+                    car_x, car_y, th0 = move(car_x, car_y, th0, actions)
+                    status = "map"          
 
             elif status == "map":
 
@@ -420,13 +441,16 @@ def main():
                 else:
                     status = "move"
                     steps = 0
+                    stopped = False
 
             elif status == "finished":
 
                 return 
             
             elif status == "stop":
-                time.sleep(0.5)  
+                time.sleep(1)  
+                status == "map"
+                stopped = stopped + 1
             web_ui.CAR_POSE = (car_x, car_y)
     finally:
         px.forward(0)
