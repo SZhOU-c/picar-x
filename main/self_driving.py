@@ -54,7 +54,6 @@ px = Picarx()
 
 def map_and_plan(env_map, car_x, car_y, th0):
     print(f"map and plan (car_x={car_x}, car_y={car_y})")
-    px.set_cam_tilt_angle(-10)
     for i in range(-60, 61, 2):
         px.set_cam_pan_angle(i)
         
@@ -377,7 +376,8 @@ def A_star(env_map, car_x_cm, car_y_cm, theta):
 def main():
     # Vilib.camera_start(vflip=False,hflip=False)
     # Vilib.display(local=True,web=True)
-    
+    px.set_cam_tilt_angle(0)
+    px.set_dir_servo_angle(0)
     env_map = np.zeros((GRID_SIZE, GRID_SIZE), dtype=np.uint8)
      # 200 * 0.5 / 2 = 50.0 cm
     car_x = (GRID_SIZE * CELL_CM) / 2.0
