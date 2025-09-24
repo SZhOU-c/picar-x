@@ -116,7 +116,7 @@ def move(x_cm, y_cm, theta, actions):
         # sleep to make sure consistent distance
         time.sleep(DT_S)
 
-        theta = wrap_angle(theta + TURN_RAD)
+        theta = wrap_angle(theta - TURN_RAD)
         x_cm = x_cm + FARC_CM * math.sin(theta)
         y_cm = y_cm + FARC_CM * math.cos(theta)
 
@@ -128,7 +128,7 @@ def move(x_cm, y_cm, theta, actions):
         px.forward(0)
         time.sleep(DT_S)
 
-        theta = wrap_angle(theta - TURN_RAD)
+        theta = wrap_angle(theta + TURN_RAD)
         x_cm = x_cm + FARC_CM * math.sin(theta)
         y_cm = y_cm + FARC_CM * math.cos(theta)
 
@@ -207,7 +207,7 @@ def step_forward(x, y, th):
 
 def step_forward_left(x, y, th):
     """fl: turn +7° (left), then move straight FARC_CM along new heading."""
-    th2 = wrap_angle(th + TURN_RAD)
+    th2 = wrap_angle(th - TURN_RAD)
     s   = FARC_CM
     x2  = x + s * math.sin(th2)
     y2  = y + s * math.cos(th2)
@@ -217,7 +217,7 @@ def step_forward_left(x, y, th):
 
 def step_forward_right(x, y, th):
     """fr: turn -7° (right), then move straight FARC_CM along new heading."""
-    th2 = wrap_angle(th - TURN_RAD)
+    th2 = wrap_angle(th + TURN_RAD)
     s   = FARC_CM
     x2  = x + s * math.sin(th2)
     y2  = y + s * math.cos(th2)
