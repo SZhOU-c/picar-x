@@ -151,54 +151,6 @@ def move(x_cm, y_cm, theta, actions):
     return x_cm, y_cm, theta
 
 
-def main():
-    # Vilib.camera_start(vflip=False,hflip=False)
-    # Vilib.display(local=True,web=True)
-
-    env_map = np.zeros((GRID_SIZE, GRID_SIZE), dtype=np.uint8)
-     # 200 * 0.5 / 2 = 50.0 cm
-    car_x = (GRID_SIZE * CELL_CM) / 2.0
-    car_y = 0
-    status = "map"
-    steps = 0
-    actions = deque()
-    th0    = 0.0  # facing +Y
-    print("init sucessfully")
-
-    try:
-        while True:
-            print("current status:", status, "steps = ", steps)
-            if status == "move" and steps < 5:
-
-                car_x, car_y, th0 = move(car_x, car_y, th0, actions)
-                steps += 1
-
-            elif status == "move" and steps >= 5:
-
-                car_x, car_y, th0 = move(car_x, car_y, th0, actions)
-                status = "map"
-
-            elif status == "map":
-
-                env_map, actions = map_and_plan(env_map, car_x, car_y, th0)
-
-                if actions is None or len(actions) == 0:
-                    # No path found – you might stop, rotate, or expand search area
-                    status = "stop"
-                    actions = deque()
-                else:
-                    status = "move"
-                    steps = 0
-
-            elif status == "finished":
-
-                return 
-            
-            elif status == "stop":
-                time.sleep(0.5)  
-    finally:
-        px.forward(0)
-
 def in_bounds(grid, r, c):
     return 0 <= r < grid.shape[0] and 0 <= c < grid.shape[1]
 
@@ -380,3 +332,55 @@ def A_star(env_map, car_x_cm, car_y_cm, theta):
 
     # No path
     return []
+
+
+def main():
+    # Vilib.camera_start(vflip=False,hflip=False)
+    # Vilib.display(local=True,web=True)
+
+    env_map = np.zeros((GRID_SIZE, GRID_SIZE), dtype=np.uint8)
+     # 200 * 0.5 / 2 = 50.0 cm
+    car_x = (GRID_SIZE * CELL_CM) / 2.0
+    car_y = 0
+    status = "map"
+    steps = 0
+    actions = deque()
+    th0    = 0.0  # facing +Y
+    print("init sucessfully")
+
+    try:
+        while True:
+            print("current status:", status, "steps = ", steps)
+            if status == "move" and steps < 5:
+
+                car_x, car_y, th0 = move(car_x, car_y, th0, actions)
+                steps += 1
+
+            elif status == "move" and steps >= 5:
+
+                car_x, car_y, th0 = move(car_x, car_y, th0, actions)
+                status = "map"
+
+            elif status == "map":
+
+                env_map, actions = map_and_plan(env_map, car_x, car_y, th0)
+
+                if actions is None or len(actions) == 0:
+                    # No path found – you might stop, rotate, or expand search area
+                    status = "stop"
+                    actions = deque()
+                else:
+                    status = "move"
+                    steps = 0
+
+            elif status == "finished":
+
+                return 
+            
+            elif status == "stop":
+                time.sleep(0.5)  
+    finally:
+        px.forward(0)
+
+if __name__ == "__main__":
+    main()
