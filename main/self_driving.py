@@ -152,8 +152,8 @@ def move(x_cm, y_cm, theta, actions):
 
 
 def main():
-    Vilib.camera_start(vflip=False,hflip=False)
-    Vilib.display(local=True,web=True)
+    #Vilib.camera_start(vflip=False,hflip=False)
+    #Vilib.display(local=True,web=True)
 
     env_map = np.zeros((GRID_SIZE, GRID_SIZE), dtype=np.uint8)
      # 200 * 0.5 / 2 = 50.0 cm
