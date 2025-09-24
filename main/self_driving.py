@@ -93,7 +93,7 @@ def move(x_cm, y_cm, theta, actions):
         return x_cm, y_cm, theta
 
     label = actions.popleft()
-
+    print(label)
     if label == 'f':
         # Straight forward
         px.set_dir_servo_angle(STEER_STRAIGHT)
@@ -367,7 +367,7 @@ def main():
 
                 if actions is None or len(actions) == 0:
                     # No path found – you might stop, rotate, or expand search area
-                    status = "stop"
+                    status = "finished"
                     actions = deque()
                 else:
                     status = "move"
