@@ -22,11 +22,12 @@ GRID_SIZE = 200
 # Example car position at the bottom center (x=0, y=0 in world coords -> mapped to (50,0))
 
 CELL_CM = 0.5          # 0.5 cm per grid cell
-TURN_DEG = 7.0
-FWD_CM   = 8.5       # forward straight step
-FARC_CM  = 6.50        # forward after 7° turn
+TURN_DEG = 6.8
+FWD_CM   = 8.48      # forward straight step
+FARC_CM  = 6.5        # forward after 7° turn
 BACK_CM  = 7.00        # backward straight step
-HEADING_BINS = 32      # quantize theta for CLOSED set (≈11.25°/bin)
+STEP = math.radians(TURN_DEG)        # align with your fl/fr increments
+HEADING_BINS = int(round(2*math.pi / STEP))
 
 STEER_STRAIGHT = 0
 DT_S = 0.3
@@ -333,7 +334,7 @@ def A_star(env_map, car_x_cm, car_y_cm, theta):
 
         # Goal test: in rectangle
         if in_goal_region_rc(rr, cc):
-    # reconstruct: labels and waypoints in world cm
+            # reconstruct: labels and waypoints in world cm
             labels    = deque()
             waypoints = deque()
 
