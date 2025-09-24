@@ -22,8 +22,8 @@ GRID_SIZE = 200
 # Example car position at the bottom center (x=0, y=0 in world coords -> mapped to (50,0))
 
 CELL_CM = 0.5          # 0.5 cm per grid cell
-TURN_DEG = 8
-FWD_CM   = 8     # forward straight step
+TURN_DEG = 7
+FWD_CM   = 6.8     # forward straight step
 FARC_CM  = 7       # forward after 7° turn
 BACK_CM  = 6.8       # backward straight step
 STEP = math.radians(TURN_DEG)        # align with your fl/fr increments
