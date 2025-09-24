@@ -17,14 +17,31 @@ def main():
             
             key = key.lower()
             power = 50
-        
-            
-            # px = Picarx(ultrasonic_pins=['D2','D3']) # tring, echo
+
             px.ultrasonic.read()
-            if key == 'r':
+            if key == 'd':
+                px.set_dir_servo_angle(30)
                 px.forward(power)
-                time.sleep(0.2)
+                time.sleep(0.3)
                 px.forward(0)
+
+            if key == 'a':
+                px.set_dir_servo_angle(-30)
+                px.forward(power)
+                time.sleep(0.3)
+                px.forward(0)
+            
+            if key == 'w':
+                px.set_dir_servo_angle(0)
+                px.forward(power)
+                time.sleep(0.3)
+                px.forward(0)
+
+            if key == 's':
+                px.set_dir_servo_angle(0)
+                px.backward(power)
+                time.sleep(0.3)
+                px.backward(0)
 
     finally:
         px.forward(0)
