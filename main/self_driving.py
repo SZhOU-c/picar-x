@@ -7,6 +7,7 @@ from vilib import Vilib
 import cv2 
 import heapq
 from collections import deque
+import matplotlib.pyplot as plt
 #from scipy.ndimage import binary_dilation
 
 
@@ -72,21 +73,44 @@ def map_and_plan(env_map, car_x, car_y, th0):
             env_map[obstacle_y, obstacle_x] = 1
 
     print("scanned map:")
-    print(env_map)
+    show_map(env_map, car_x, car_y)
     # wrap the obstacles to fill the measuring gap.
     # After marking obstacles, you can expand them to account for obstacle width
     env_map = cv2.dilate(env_map, np.ones((3,3), np.uint8), iterations=3)
 
 
     print("dilated map:")
-    print(env_map)
+    show_map(env_map, car_x, car_y)
     
-    actions = deque(A_star(env_map, car_x, car_y, th0))
-    print("actions", actions)
-
+    actions, waypoints = deque(A_star(env_map, car_x, car_y, th0))
+    show_map(env_map, car_x, car_y, waypoints)
     return env_map, actions
 
+def show_map(env_map, car_x=None, car_y=None, path=None):
+    """
+    Display the environment map using matplotlib.
+    
+    env_map: 2D numpy array (0=free, 1=obstacle)
+    car_x, car_y: optional car position in grid coords (row,col or x,y)
+    path: optional list of (x,y) waypoints in world cm (not grid)
+    """
+    plt.figure(figsize=(6,6))
+    plt.imshow(env_map, cmap="gray_r", origin="lower")
 
+    # draw car position (red dot)
+    if car_x is not None and car_y is not None:
+        plt.plot(car_x, car_y, "ro", markersize=6, label="Car")
+
+    # draw path if provided
+    if path is not None:
+        xs, ys = zip(*[(x, y) for (x,y,*_) in path])
+        plt.plot(xs, ys, "b-", linewidth=1.5, label="Path")
+
+    plt.title("Environment Map")
+    plt.xlabel("Grid X (cols)")
+    plt.ylabel("Grid Y (rows)")
+    plt.legend()
+    plt.show()
 
 def move(x_cm, y_cm, theta, actions):
     if not actions:
@@ -277,7 +301,7 @@ def A_star(env_map, car_x_cm, car_y_cm, theta):
     r0, c0 = world_to_grid(car_x_cm, car_y_cm)
     if not in_bounds(env_map, r0, c0) or not passable(env_map, r0, c0):
         print("not in bound")
-        return []
+        return [], []
 
     start = (car_x_cm, car_y_cm, wrap_angle(theta))
 
@@ -304,15 +328,24 @@ def A_star(env_map, car_x_cm, car_y_cm, theta):
 
         # Goal test: in rectangle
         if in_goal_region_rc(rr, cc):
-            # reconstruct labels from (x,y,th) backwards
-            labels = deque()
-            cur = key
-            while cur in came_from:
-                (px,py,pth), lab = came_from[cur]
+    # reconstruct: labels and waypoints in world cm
+            labels    = deque()
+            waypoints = deque()
+
+            # start from the current goal state
+            curkey   = key
+            cur_state = (x, y, th)
+            waypoints.appendleft(cur_state)
+
+            while curkey in came_from:
+                (px, py, pth), lab = came_from[curkey]
                 labels.appendleft(lab)
+                waypoints.appendleft((px, py, pth))
+                # walk to parent key
                 pr, pc = world_to_grid(px, py)
-                cur = (pr, pc, heading_bin(pth))
-            return list(labels)
+                curkey = (pr, pc, heading_bin(pth))
+
+            return list(labels), list(waypoints)
 
         # Expand 4 successors
         for (xn,yn,thn, edge_cost, label) in successors(x,y,th):
@@ -333,8 +366,7 @@ def A_star(env_map, car_x_cm, car_y_cm, theta):
 
     # No path
     print("No path")
-    return []
-
+    return [], []
 
 def main():
     # Vilib.camera_start(vflip=False,hflip=False)
