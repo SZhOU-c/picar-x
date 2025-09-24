@@ -82,7 +82,7 @@ def map_and_plan(env_map, car_x, car_y, th0):
 
     # wrap the obstacles to fill the measuring gap.
     # After marking obstacles, you can expand them to account for obstacle width
-    scan = cv2.dilate(scan, np.ones((3,3), np.uint8), iterations=4)
+    scan = cv2.dilate(scan, np.ones((3,3), np.uint8), iterations=3)
 
     env_map = np.maximum(env_map, scan).astype(np.uint8)
 
