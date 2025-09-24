@@ -54,6 +54,9 @@ px = Picarx()
 
 def map_and_plan(env_map, car_x, car_y, th0):
     print(f"map and plan (car_x={car_x}, car_y={car_y})")
+
+    scan = np.zeros_like(env_map, dtype=np.uint8)
+
     for i in range(-60, 61, 2):
         px.set_cam_pan_angle(i)
         
@@ -71,19 +74,17 @@ def map_and_plan(env_map, car_x, car_y, th0):
         obstacle_x = int(hit_x_cm / 0.5)
         obstacle_y = int(hit_y_cm / 0.5)
         if 0 <= obstacle_x < GRID_SIZE and 0 <= obstacle_y < GRID_SIZE:
-            env_map[obstacle_y, obstacle_x] = 1
+            scan[obstacle_y, obstacle_x] = 1
 
-    print("scanned map:")
-    web_ui.ENV_MAP = env_map.copy()
-    web_ui.CAR_POSE = (car_x, car_y)
+
     # wrap the obstacles to fill the measuring gap.
     # After marking obstacles, you can expand them to account for obstacle width
-    env_map = cv2.dilate(env_map, np.ones((3,3), np.uint8), iterations=2)
+    scan = cv2.dilate(scan, np.ones((3,3), np.uint8), iterations=2)
 
+    env_map = np.maximum(env_map, scan).astype(np.uint8)
 
     print("dilated map:")
     web_ui.ENV_MAP = env_map.copy()
-
     
     actions, waypoints = A_star(env_map, car_x, car_y, th0)
     actions = deque(actions) if actions else deque()
