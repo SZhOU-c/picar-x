@@ -22,11 +22,12 @@ GRID_SIZE = 200
 # Example car position at the bottom center (x=0, y=0 in world coords -> mapped to (50,0))
 
 CELL_CM = 0.5          # 0.5 cm per grid cell
-TURN_DEG = 10
+TURN_DEG_L = 10
+TURN_DEG = 7
 FWD_CM   = 6.8     # forward straight step
 FARC_CM  = 7       # forward after 7° turn
 BACK_CM  = 6.8       # backward straight step
-STEP = math.radians(TURN_DEG)        # align with your fl/fr increments
+STEP = math.radians(3.3)        # align with your fl/fr increments
 HEADING_BINS = int(round(2*math.pi / STEP))
 
 STEER_STRAIGHT = 0
@@ -34,6 +35,7 @@ DT_S = 0.3
 STEER_LEFT = -30
 STEER_RIGHT = 30
 TURN_RAD = math.radians(TURN_DEG)
+TURN_RAD_L = math.radians(TURN_DEG_L)
 
 # Goal region in GRID coordinates (row 0 = bottom)
 GOAL_ROW_MIN, GOAL_ROW_MAX = 180, 199
@@ -123,7 +125,7 @@ def move(x_cm, y_cm, theta, actions):
         # sleep to make sure consistent distance
         time.sleep(DT_S)
 
-        theta = wrap_angle(theta - TURN_RAD)
+        theta = wrap_angle(theta - TURN_RAD_L)
         x_cm = x_cm + FARC_CM * math.sin(theta)
         y_cm = y_cm + FARC_CM * math.cos(theta)
 
@@ -214,7 +216,7 @@ def step_forward(x, y, th):
 
 def step_forward_left(x, y, th):
     """fl: turn +7° (left), then move straight FARC_CM along new heading."""
-    th2 = wrap_angle(th - TURN_RAD)
+    th2 = wrap_angle(th - TURN_RAD_L)
     s   = FARC_CM
     x2  = x + s * math.sin(th2)
     y2  = y + s * math.cos(th2)
