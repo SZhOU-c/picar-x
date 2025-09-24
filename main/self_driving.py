@@ -67,8 +67,8 @@ def map_and_plan(env_map, car_x, car_y, th0):
         angle_rad = i * math.pi / 180
         beam = th0 + angle_rad  # add car heading
         # World hit point (in cm), relative to car’s pose
-        hit_x_cm = car_x + distance * math.cos(beam)
-        hit_y_cm = car_y + distance * math.sin(beam)
+        hit_x_cm = car_x + distance * math.sin(beam)
+        hit_y_cm = car_y + distance * math.cos(beam)
 
         # Convert to grid indices (row,col), cell = 0.5 cm
         obstacle_x = int(hit_x_cm / 0.5)
