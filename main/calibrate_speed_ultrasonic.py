@@ -34,14 +34,18 @@ def main():
                 px.set_cam_pan_angle(i)
         
                 distance = round(px.ultrasonic.read(), 2)
+                print("reading: ", distance)
                 if distance < 0 or distance > GRID_SIZE: 
-                    continue
+                    distance = round(px.ultrasonic.read(), 2)
+                    print("second round reading: ", distance)
+                    if distance < 0 or distance > GRID_SIZE: 
+                        continue
 
                 angle_rad = i * math.pi / 180
                 beam = th0 + angle_rad  # add car heading
                 # World hit point (in cm), relative to car’s pose
-                hit_x_cm = car_x + distance * math.cos(beam)
-                hit_y_cm = car_y + distance * math.sin(beam)
+                hit_x_cm = car_x + distance * math.sin(beam)
+                hit_y_cm = car_y + distance * math.cos(beam)
 
                 # Convert to grid indices (row,col), cell = 0.5 cm
                 obstacle_x = int(hit_x_cm / 0.5)
@@ -49,7 +53,7 @@ def main():
                 if 0 <= obstacle_x < GRID_SIZE and 0 <= obstacle_y < GRID_SIZE:
                     env_map[obstacle_y, obstacle_x] = 1
             update_web(env_map, car_x, car_y)
-            time.sleep(1)
+            time.sleep(5)
     finally:
         px.forward(0)
 
