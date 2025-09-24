@@ -3,6 +3,7 @@ import numpy as np
 import cv2
 from flask import Flask, Response, render_template_string, request
 
+
 # ====== import your globals if they live elsewhere ======
 # from your_nav_module import env_map, CELL_CM, GOAL_ROW_MIN, GOAL_ROW_MAX, GOAL_COL_MIN, GOAL_COL_MAX
 # For demo defaults:
@@ -146,6 +147,18 @@ def map_png():
     resp.headers.add("Access-Control-Allow-Origin", "*")
     return resp
 
+def start_server():
+    """Start Flask in a background thread."""
+    import threading
+    t = threading.Thread(
+        target=lambda: app.run(host="0.0.0.0", port=5000, debug=False, use_reloader=False),
+        daemon=True
+    )
+    t.start()
+    print("[web_ui] Flask server started on http://0.0.0.0:5000")
+
 if __name__ == "__main__":
     # Listen on all interfaces so you can hit it from your laptop
     app.run(host="0.0.0.0", port=5000, debug=False)
+
+
