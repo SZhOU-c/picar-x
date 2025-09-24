@@ -58,7 +58,6 @@ def map_and_plan(env_map, car_x, car_y, th0):
         distance = round(px.ultrasonic.read(), 2)
         if distance < 0 or distance > GRID_SIZE: 
             continue
-        print(distance) 
 
         angle_rad = i * math.pi / 180
         beam = th0 + angle_rad  # add car heading
@@ -83,7 +82,7 @@ def map_and_plan(env_map, car_x, car_y, th0):
     print(env_map)
     
     actions = deque(A_star(env_map, car_x, car_y, th0))
-    print(actions)
+    print("actions", actions)
 
     return env_map, actions
 
@@ -164,6 +163,7 @@ def main():
     steps = 0
     actions = deque()
     th0    = 0.0  # facing +Y
+    print("init sucessfully")
 
     try:
         while True:
