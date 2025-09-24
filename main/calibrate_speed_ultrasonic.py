@@ -22,7 +22,7 @@ def main():
         car_x = (GRID_SIZE * CELL_CM) / 2.0
         car_y = 0
         th0    = 0.0  # facing +Y
-
+        web_ui.start_server()
 
         print("init sucessfully")
         for i in range(-60, 61, 2):
@@ -44,16 +44,16 @@ def main():
             if 0 <= obstacle_x < GRID_SIZE and 0 <= obstacle_y < GRID_SIZE:
                 env_map[obstacle_y, obstacle_x] = 1
 
-        web_ui.start_server()
-
-        web_ui.ENV_MAP = env_map.copy()
-        web_ui.CAR_POSE = (car_x, car_y)
-        web_ui.WAYPOINTS = None
-
+        
+        while(true):
+            update_web(env_map, car_x, car_y)
     finally:
         px.forward(0)
 
-
+def update_web(env_map, car_x, car_y):
+    web_ui.ENV_MAP = env_map.copy()
+    web_ui.CAR_POSE = (car_x, car_y)
+    web_ui.WAYPOINTS = None
 
 def velocity_test():
     px.set_dir_servo_angle(0)
