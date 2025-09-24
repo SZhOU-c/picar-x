@@ -23,7 +23,7 @@ GRID_SIZE = 200
 
 CELL_CM = 0.5          # 0.5 cm per grid cell
 TURN_DEG = 6.5
-FWD_CM   = 8     # forward straight step
+FWD_CM   = 7.5     # forward straight step
 FARC_CM  = 6        # forward after 7° turn
 BACK_CM  = 6.5       # backward straight step
 STEP = math.radians(TURN_DEG)        # align with your fl/fr increments
