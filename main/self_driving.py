@@ -94,31 +94,6 @@ def map_and_plan(env_map, car_x, car_y, th0):
     web_ui.WAYPOINTS = waypoints
     return env_map, actions
 
-def show_map(env_map, car_x=None, car_y=None, path=None):
-    """
-    Display the environment map using matplotlib.
-    
-    env_map: 2D numpy array (0=free, 1=obstacle)
-    car_x, car_y: optional car position in grid coords (row,col or x,y)
-    path: optional list of (x,y) waypoints in world cm (not grid)
-    """
-    plt.figure(figsize=(6,6))
-    plt.imshow(env_map, cmap="gray_r", origin="lower")
-
-    # draw car position (red dot)
-    if car_x is not None and car_y is not None:
-        plt.plot(car_x, car_y, "ro", markersize=6, label="Car")
-
-    # draw path if provided
-    if path is not None and len(path) > 1:
-        xs, ys = zip(*[(x, y) for (x,y,*_) in path])
-        plt.plot(xs, ys, "b-", linewidth=1.5, label="Path")
-
-    plt.title("Environment Map")
-    plt.xlabel("Grid X (cols)")
-    plt.ylabel("Grid Y (rows)")
-    plt.legend()
-    plt.show()
 
 def move(x_cm, y_cm, theta, actions):
     if not actions:
