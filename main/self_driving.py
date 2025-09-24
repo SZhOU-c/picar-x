@@ -75,7 +75,7 @@ def map_and_plan(env_map, car_x, car_y, th0):
     print(env_map)
     # wrap the obstacles to fill the measuring gap.
     # After marking obstacles, you can expand them to account for obstacle width
-    env_map = cv2.dilate(env_map, np.ones((3,3), np.uint8), iterations=4)
+    env_map = cv2.dilate(env_map, np.ones((3,3), np.uint8), iterations=3)
 
 
     print("dilated map:")
@@ -331,6 +331,7 @@ def A_star(env_map, car_x_cm, car_y_cm, theta):
                 heapq.heappush(open_heap, (fn, gn, xn, yn, thn))
 
     # No path
+    print("No path")
     return []
 
 
