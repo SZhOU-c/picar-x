@@ -414,7 +414,7 @@ def main():
 
     try:
         while True:
-            
+            px.set_cam_pan_angle(0)
             print("current status:", status, "steps = ", steps)
             if status == "move":
                 if stop_seen() and not stopped:
