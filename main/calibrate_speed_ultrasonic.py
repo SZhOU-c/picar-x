@@ -11,24 +11,35 @@ def main():
     try:
         power = 50
         
-        px.set_dir_servo_angle(0)
+        px.set_dir_servo_angle(30)
         px.set_cam_pan_angle(0)
         # px = Picarx(ultrasonic_pins=['D2','D3']) # tring, echo
         px.ultrasonic.read()
 
-        start = px.ultrasonic.read()
         px.forward(power)
 
-        time.sleep(0.5)
-        start = px.ultrasonic.read()
-        time.sleep(0.5)
-        end = px.ultrasonic.read()
+        time.sleep(0.2)
         px.forward(0)
-        distance = start - end
-        print("distance",distance , " velocity = ", distance/0.5)
-
     finally:
         px.forward(0)
+
+def velocity_test():
+    px.set_dir_servo_angle(0)
+    px.set_cam_pan_angle(0)
+       # px = Picarx(ultrasonic_pins=['D2','D3']) # tring, echo
+    px.ultrasonic.read()
+
+    start = px.ultrasonic.read()
+    px.forward(power)
+
+    time.sleep(0.5)
+    start = px.ultrasonic.read()
+    time.sleep(0.5)
+    end = px.ultrasonic.read()
+    px.forward(0)
+    distance = start - end
+    print("distance",distance , " velocity = ", distance/0.5)
+
 
 def speed_test():
         power = 50
