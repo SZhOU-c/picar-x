@@ -363,7 +363,7 @@ def A_star(env_map, car_x_cm, car_y_cm, theta):
                 continue
             keyn = (rn, cn, heading_bin(thn))
             gn   = g + edge_cost
-            if gn < g_cost.get(keyn, 1e15):
+            if gn < g_cost.get(keyn, 1e9):
                 g_cost[keyn] = gn
                 came_from[keyn] = ((x,y,th), label)
                 hn = dist_to_goal_rect_cm(xn, yn)
