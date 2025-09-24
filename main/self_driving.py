@@ -78,7 +78,7 @@ def map_and_plan(env_map, car_x, car_y, th0):
     web_ui.CAR_POSE = (car_x, car_y)
     # wrap the obstacles to fill the measuring gap.
     # After marking obstacles, you can expand them to account for obstacle width
-    env_map = cv2.dilate(env_map, np.ones((3,3), np.uint8), iterations=3)
+    env_map = cv2.dilate(env_map, np.ones((3,3), np.uint8), iterations=2)
 
 
     print("dilated map:")
@@ -303,7 +303,8 @@ def A_star(env_map, car_x_cm, car_y_cm, theta):
     """
     # Validate start
     r0, c0 = world_to_grid(car_x_cm, car_y_cm)
-    if not in_bounds(env_map, r0, c0) or not passable(env_map, r0, c0):
+    # removed passable
+    if not in_bounds(env_map, r0, c0):
         print("not in bound")
         return [], []
 
@@ -382,7 +383,7 @@ def main():
     car_y = 0
 
     web_ui.start_server()
-    
+
     web_ui.ENV_MAP = env_map.copy()
     web_ui.CAR_POSE = (car_x, car_y)
     web_ui.WAYPOINTS = None
