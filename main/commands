@@ -1,0 +1,11 @@
+cd ~/picar-x/example/calibration
+sudo ~/venvs/picar/bin/python calibration.py 
+
+source ~/venvs/picar/bin/activate
+cd ~/picar-x/main
+git pull origin v2.0
+sudo ~/venvs/picar/bin/python self_driving.py
+token: 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
+sudo ~/venvs/picar/bin/python calibrate_speed_ultrasonic.py
+cd ~/vilib/examples
+sudo ~/venvs/picar/bin/python traffic_sign_detect.py

@@ -354,12 +354,15 @@ def A_star(env_map, car_x_cm, car_y_cm, theta):
 
 def stop_seen():
     p = Vilib.traffic_sign_obj_parameter
-    return (
-        p.get('t') == 'stop' and
+    for i in range(-30, 31, 10):
+        px.set_cam_pan_angle(i)
+        if (p.get('t') == 'stop' and
         p.get('w', 0) >= STOP_MIN_W and
         p.get('h', 0) >= STOP_MIN_H and
-        p.get('acc', 0) >= STOP_MIN_ACC
-    )
+        p.get('acc', 0) >= STOP_MIN_ACC):
+            return 1
+
+    return 0
 
 def main():
     Vilib.camera_start(vflip=False,hflip=False)
